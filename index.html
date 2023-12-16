@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Base64 encoder/decoder</title>
+  <style>
+    body {
+      background-color: #efe897;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .window {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    textarea {
+      resize: none;
+      overflow: auto;
+      width: 400px;
+      max-width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Base64 encoder/decoder</h1>
+
+  <div class="window">
+    <textarea id="encoderInput" placeholder="Input to Base64 encode" oninput="encodeText()" rows="1"></textarea>
+    <div id="encoderErrorMessage" style="color: red; display: none;"></div>
+  </div>
+
+  <div class="window">
+    <textarea id="decoderInput" placeholder="Input to Base64 decode" oninput="decodeText()" rows="1"></textarea>
+    <div id="decoderErrorMessage" style="color: red; display: none;"></div>
+  </div>
+
+  <script>
+    function adjustTextareaHeight(textareaId) {
+      const textarea = document.getElementById(textareaId);
+      textarea.style.height = "";
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+
+    function encodeText() {
+      var input = document.getElementById("encoderInput").value;
+      var output = "";
+      var encoderErrorMessage = document.getElementById("encoderErrorMessage");
+
+      try {
+        output = btoa(input);
+        encoderErrorMessage.style.display = "none";
+      } catch (error) {
+        output = "";
+        encoderErrorMessage.style.display = "block";
+        encoderErrorMessage.textContent = "Encoding failed.";
+      }
+
+      document.getElementById("decoderInput").value = output;
+      clearDecoderErrorMessage(); // Clear decoder error message
+      adjustTextareaHeight("encoderInput"); // Adjust textarea height
+      adjustTextareaHeight("decoderInput"); // Adjust textarea height for output
+    }
+
+    function decodeText() {
+      var input = document.getElementById("decoderInput").value;
+      var output = "";
+      var decoderErrorMessage = document.getElementById("decoderErrorMessage");
+
+      try {
+        output = atob(input);
+        decoderErrorMessage.style.display = "none";
+      } catch (error) {
+        output = "";
+        decoderErrorMessage.style.display = "block";
+        decoderErrorMessage.textContent = "Decoding failed.";
+      }
+
+      document.getElementById("encoderInput").value = output;
+      clearEncoderErrorMessage(); // Clear encoder error message
+      adjustTextareaHeight("decoderInput"); // Adjust textarea height
+      adjustTextareaHeight("encoderInput"); // Adjust textarea height for output
+    }
+
+    function clearEncoderErrorMessage() {
+      document.getElementById("encoderErrorMessage").style.display = "none";
+    }
+
+    function clearDecoderErrorMessage() {
+      document.getElementById("decoderErrorMessage").style.display = "none";
+    }
+
+    // Adjust textarea height on page load
+    window.addEventListener("load", function () {
+      adjustTextareaHeight("encoderInput");
+      adjustTextareaHeight("decoderInput");
+    });
+  </script>
+</body>
+
+</html>
